@@ -27,6 +27,34 @@
             return true;
         }
 
+        public function insertproduct($Product_Name, $Product_Price, $Product_color, $Product_Amount) {
+            
+            $sql = "INSERT INTO product(Product_Name, Product_Price, Product_color, Product_Amount) VALUES(:Product_Name, :Product_Price, :Product_color, :Product_Amount)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([
+                'Product_Name' => $Product_Name,                
+                'Product_Price' => $Product_Price,
+                'Product_color' => $Product_color,
+                'Product_Amount' => $Product_Amount
+            ]);
+            return true;
+        }
+
+        public function insertOrder($Order_Product, $Order_Amount, $Order_color) {
+            // var_dump($Order_Product);
+            // var_dump($Order_Amount);
+            // var_dump($Order_color);die();
+            $sql = "INSERT INTO order(Order_Product, Order_Amount, Order_color) VALUES(:Order_Product, :Order_Amount, :Order_color)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([
+                'Order_Product' => $Order_Product,
+                'Order_Amount' => $Order_Amount,                
+                'Order_color' => $Order_color
+                
+            ]);
+            return true;
+        }
+
         public function login($email, $pass) {
 
             
@@ -46,7 +74,7 @@
                    
                    $_SESSION['username'] = $sqlusername;
                    $_SESSION['email'] = $sqlemail;
-  var_dump($_SESSION['username']);die();
+//   var_dump($_SESSION['username']);die();
                 //    header("Location: ../index.php");
                    exit;
                }else {
@@ -69,6 +97,15 @@
 
            
         }
+
+        public function selectorder() {
+            $sql = "SELECT * FROM product ";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchALL();
+            return $result;
+        }
+
 
         public function read() {
             $sql = "SELECT * FROM users ORDER BY id DESC";
