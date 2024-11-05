@@ -31,11 +31,40 @@ session_start();
             echo $util->showMessage("danger","Something went wrong!");
         }
     }
+
+    if (isset($_POST["addproduct"])) {
+        $Product_Name = $util->testInput($_POST['Product_Name']);       
+        $Product_Price = $util->testInput($_POST['Product_Price']);
+        $Product_color = $util->testInput($_POST['Product_color']);
+        $Product_Amount = $util->testInput($_POST['Product_Amount']);
+       
+        $db->insertproduct($Product_Name, $Product_Price, $Product_color, $Product_Amount);
+         
+    }
+
+    if (isset($_POST["addorder"])) {
+        $Order_Product = $util->testInput($_POST['Order_Product']);       
+        $Order_color = $util->testInput($_POST['Order_color']);
+        $Order_Amount = $util->testInput($_POST['Order_Amount']);
+        
+       
+        $db->insertOrder($Order_Product, $Order_Amount, $Order_color);
+         
+    }
+
     if (isset($_POST["login"])) {
         $email = $_POST['email'];
         $pass = $_POST['password'];
 
-        $users = $db->login($email, $pass);
+        $db->login($email, $pass);
+    }
+
+    if (isset($_POST["selectorder"])) {
+        $order = $db->selectorder();
+        
+        header("Content-type:application/json; charset=UTF-8");
+        echo json_encode($order);
+        
     }
 
     if (isset($_GET["read"])) {
